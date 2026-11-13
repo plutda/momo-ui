@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch, type Component } from 'vue'
+import Docs from './Docs.vue'
 
 interface DemoEntry {
   key: string
@@ -33,18 +34,30 @@ const demos: DemoEntry[] = order
   }))
 
 const initialKey = window.location.hash.replace('#', '')
+const initialDemo = demos.some((demo) => demo.key === initialKey)
+const view = ref<'docs' | 'demo'>(initialDemo ? 'demo' : 'docs')
 const active = ref(
-  demos.some((demo) => demo.key === initialKey)
+  initialDemo
     ? initialKey
     : (demos[0]?.key ?? ''),
 )
 const current = computed(() => demos.find((demo) => demo.key === active.value))
 
-watch(active, (key) => {
-  if (key) {
-    window.history.replaceState(null, '', `#${key}`)
-  }
+watch([view, active], ([nextView, key]) => {
+  const hash = nextView === 'demo' && key ? key : 'docs'
+  window.history.replaceState(null, '', `#${hash}`)
 })
+
+function showDocs() {
+  view.value = 'docs'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function showDemo(key = active.value || demos[0]?.key || 'basic') {
+  active.value = key
+  view.value = 'demo'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 </script>
 
 <template>
@@ -54,14 +67,41 @@ watch(active, (key) => {
         <span class="pg-logo">🍡</span>
         <div>
           <h1 class="pg-title">Momo UI</h1>
-          <p class="pg-subtitle">卡通风格 Vue 3 组件库 · Playground</p>
+          <p class="pg-subtitle">卡通风格 Vue 3 组件库</p>
         </div>
       </div>
-      <span class="pg-version">v0.1.0</span>
+      <div class="pg-header__actions">
+        <nav class="pg-nav" aria-label="主导航">
+          <button
+            type="button"
+            :class="{ 'is-active': view === 'docs' }"
+            @click="showDocs"
+          >
+            文档
+          </button>
+          <button
+            type="button"
+            :class="{ 'is-active': view === 'demo' }"
+            @click="showDemo()"
+          >
+            组件示例
+          </button>
+        </nav>
+        <a
+          class="pg-github"
+          href="https://github.com/plutda/momo-ui"
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub ↗
+        </a>
+        <span class="pg-version">v0.1.0</span>
+      </div>
     </header>
 
-    <div class="pg-body">
-      <aside class="pg-side">
+    <div class="pg-body" :class="{ 'pg-body--docs': view === 'docs' }">
+      <aside v-if="view === 'demo'" class="pg-side">
+        <span class="pg-side-title">组件分类</span>
         <button
           v-for="demo in demos"
           :key="demo.key"
@@ -75,8 +115,9 @@ watch(active, (key) => {
         </button>
       </aside>
 
-      <main class="pg-main">
-        <component :is="current?.component" v-if="current" />
+      <main class="pg-main" :class="{ 'pg-main--docs': view === 'docs' }">
+        <Docs v-if="view === 'docs'" @navigate="showDemo" />
+        <component :is="current?.component" v-else-if="current" />
       </main>
     </div>
   </div>
@@ -89,6 +130,7 @@ watch(active, (key) => {
 
 body {
   margin: 0;
+  overflow-x: hidden;
   background: #fbf8ff;
   background-image: radial-gradient(#e6ddff 1.4px, transparent 1.4px);
   background-size: 22px 22px;
@@ -109,6 +151,61 @@ body {
   background: rgba(255, 255, 255, 0.86);
   border-bottom: 2px solid var(--momo-border-soft);
   backdrop-filter: blur(10px);
+}
+
+.pg-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pg-nav {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--momo-bg-soft);
+  border: 1.5px solid var(--momo-border-soft);
+  border-radius: 12px;
+
+  button {
+    padding: 7px 13px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--momo-text-secondary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    transition: var(--momo-transition-fast);
+
+    &:hover {
+      color: var(--momo-text-primary);
+      background: #fff;
+    }
+
+    &.is-active {
+      color: var(--momo-text-primary);
+      background: #fff;
+      box-shadow: 0 2px 7px rgba(45, 42, 62, 0.09);
+    }
+  }
+}
+
+.pg-github {
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--momo-text-regular);
+  text-decoration: none;
+  border: 1.5px solid var(--momo-border-soft);
+  border-radius: 10px;
+  transition: var(--momo-transition-fast);
+
+  &:hover {
+    color: var(--momo-color-primary);
+    border-color: var(--momo-color-primary-light);
+  }
 }
 
 .pg-brand {
@@ -163,6 +260,12 @@ body {
   margin: 0 auto;
 }
 
+.pg-body--docs {
+  display: block;
+  max-width: none;
+  padding: 0;
+}
+
 .pg-side {
   position: sticky;
   top: 92px;
@@ -172,6 +275,15 @@ body {
   gap: 8px;
   align-self: flex-start;
   width: 176px;
+}
+
+.pg-side-title {
+  padding: 0 8px 4px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: var(--momo-text-placeholder);
+  text-transform: uppercase;
 }
 
 .pg-side-item {
@@ -212,6 +324,10 @@ body {
   flex: 1;
   min-width: 0;
   padding-bottom: 60px;
+}
+
+.pg-main--docs {
+  padding-bottom: 0;
 }
 
 /* ---------- demo 公共样式 ---------- */
@@ -298,5 +414,64 @@ body {
   background: var(--momo-bg-soft);
   border: 1.5px solid var(--momo-border-soft);
   border-radius: 14px;
+}
+
+@media (max-width: 820px) {
+  .pg-header {
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .pg-header__actions {
+    gap: 8px;
+  }
+
+  .pg-version {
+    display: none;
+  }
+
+  .pg-body {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .pg-body--docs {
+    padding: 0;
+  }
+
+  .pg-side {
+    position: static;
+    flex-direction: row;
+    width: 100%;
+    padding-bottom: 4px;
+    overflow-x: auto;
+  }
+
+  .pg-side-title {
+    display: none;
+  }
+
+  .pg-side-item {
+    flex: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .pg-header {
+    position: relative;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .pg-header__actions {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .pg-github {
+    margin-left: 0;
+  }
 }
 </style>

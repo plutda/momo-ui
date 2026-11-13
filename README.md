@@ -2,6 +2,11 @@
 
 > 卡通风格的 Vue 3 基础组件库 —— 粗描边、硬投影、糖果色、果冻动效，组件齐全，开箱即用。
 
+## 在线文档
+
+- [文档首页](https://plutda.github.io/momo-ui/)
+- [组件示例](https://plutda.github.io/momo-ui/#basic)
+
 - 🧱 **60+ 组件**：覆盖基础、表单、数据展示、导航、反馈、高级六大类
 - 🎨 **CSS 变量主题**：所有颜色 / 圆角 / 阴影 / 动效均以 token 暴露，覆盖 `:root` 即可换肤
 - 🧩 **TypeScript**：完整类型定义，SFC + `<script setup>`

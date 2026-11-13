@@ -19,6 +19,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "docs:dev": "vite",
+    "docs:build": "vite build --config vite.site.config.ts",
+    "docs:preview": "vite preview --config vite.site.config.ts",
     "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview"
   },
