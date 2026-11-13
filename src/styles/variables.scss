@@ -1,0 +1,94 @@
+/* ============================================================
+ * Momo UI · Design Tokens
+ * 卡通风格核心：糖果色 / 粗描边 / 硬投影 / 大圆角 / 果冻缓动
+ * 所有组件只消费 CSS 变量，用户可通过覆盖 :root 换肤。
+ * ============================================================ */
+
+:root {
+  /* ---------- Brand colors ---------- */
+  --momo-color-primary: #7c5cff;
+  --momo-color-primary-dark: #6144e0;
+  --momo-color-primary-light: #a58cff;
+  --momo-color-primary-soft: #efeaff;
+
+  --momo-color-secondary: #ffb020;
+  --momo-color-secondary-soft: #fff3d6;
+
+  --momo-color-success: #2ed573;
+  --momo-color-success-soft: #ddfbe9;
+
+  --momo-color-warning: #ffa502;
+  --momo-color-warning-soft: #fff1d6;
+
+  --momo-color-danger: #ff4757;
+  --momo-color-danger-soft: #ffe3e6;
+
+  --momo-color-info: #54a0ff;
+  --momo-color-info-soft: #e3efff;
+
+  /* ---------- Text ---------- */
+  --momo-text-primary: #2d2a3e;
+  --momo-text-regular: #5a5670;
+  --momo-text-secondary: #8f8aa8;
+  --momo-text-placeholder: #b6b2c9;
+  --momo-text-inverse: #ffffff;
+
+  /* ---------- Background ---------- */
+  --momo-bg-page: #fff9f2;
+  --momo-bg-card: #ffffff;
+  --momo-bg-soft: #f6f3ff;
+  --momo-bg-hover: #f1ecff;
+  --momo-bg-mask: rgba(45, 42, 62, 0.45);
+  --momo-bg-disabled: #f2f0f8;
+
+  /* ---------- Border ---------- */
+  --momo-border-color: #2d2a3e;
+  --momo-border-soft: #e6e2f3;
+  --momo-border-width: 2px;
+
+  /* ---------- Radius ---------- */
+  --momo-radius-xs: 6px;
+  --momo-radius-sm: 9px;
+  --momo-radius-base: 13px;
+  --momo-radius-lg: 18px;
+  --momo-radius-xl: 24px;
+  --momo-radius-round: 999px;
+
+  /* ---------- Shadow (hard cartoon shadow) ---------- */
+  --momo-shadow-xs: 2px 2px 0 rgba(45, 42, 62, 0.9);
+  --momo-shadow-sm: 3px 3px 0 rgba(45, 42, 62, 0.9);
+  --momo-shadow-base: 4px 4px 0 rgba(45, 42, 62, 0.9);
+  --momo-shadow-lg: 6px 6px 0 rgba(45, 42, 62, 0.9);
+  --momo-shadow-float: 0 14px 34px rgba(45, 42, 62, 0.18);
+  --momo-shadow-soft: 0 6px 18px rgba(124, 92, 255, 0.12);
+
+  /* ---------- Typography ---------- */
+  --momo-font-family: 'Baloo 2', 'Nunito', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+  --momo-font-size-xs: 12px;
+  --momo-font-size-sm: 13px;
+  --momo-font-size-base: 14px;
+  --momo-font-size-lg: 16px;
+  --momo-font-size-xl: 20px;
+  --momo-font-size-xxl: 26px;
+  --momo-font-weight-bold: 700;
+
+  /* ---------- Component size ---------- */
+  --momo-height-sm: 30px;
+  --momo-height-base: 38px;
+  --momo-height-lg: 46px;
+  --momo-control-padding: 12px;
+
+  /* ---------- Motion ---------- */
+  --momo-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --momo-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --momo-transition: all 0.22s var(--momo-ease-bounce);
+  --momo-transition-fast: all 0.14s var(--momo-ease-out);
+
+  /* ---------- Z-index ---------- */
+  --momo-z-popper: 2100;
+  --momo-z-mask: 2050;
+  --momo-z-dialog: 2060;
+  --momo-z-message: 2200;
+  --momo-z-loading: 2300;
+}
